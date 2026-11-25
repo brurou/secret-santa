@@ -3,140 +3,211 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Secret Santa Hunt</title>
+<title>The Stolen Gift</title>
 <meta name="robots" content="noindex">
 <style>
-  :root { --bg:#0f3d2e; --card:#fffaf0; --ink:#1d1d1d; --red:#c8102e; --gold:#f2c14e; --green:#1f7a4d; }
+  :root { --bg:#07080f; --card:#141726; --ink:#e9e2cc; --dim:#9a937f; --gold:#d4af37; --red:#a3203a; --line:#3a3420; }
   * { box-sizing: border-box; }
   html, body { margin:0; min-height:100%; }
-  body { background: radial-gradient(circle at top, #1a5c45, var(--bg) 70%); color:var(--ink);
-    font: 18px/1.45 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; min-height:100vh;
+  body { background: radial-gradient(ellipse at 50% 20%, #1c2040 0%, #0d0f1f 45%, var(--bg) 100%); color:var(--ink);
+    font: 18px/1.5 Georgia, "Times New Roman", serif; min-height:100vh;
     display:flex; align-items:center; justify-content:center; padding:24px 16px; overflow-x:hidden; }
   .snow { position:fixed; inset:0; pointer-events:none; overflow:hidden; }
-  .snow i { position:absolute; top:-10px; color:#fff; opacity:.8; animation: fall linear infinite; }
+  .snow i { position:absolute; top:-10px; color:#cfd6ff; opacity:.35; font-style:normal; animation: fall linear infinite; }
   @keyframes fall { to { transform: translateY(110vh) rotate(360deg); } }
   @media (prefers-reduced-motion: reduce) { .snow { display:none; } }
-  main { position:relative; width:100%; max-width:440px; background:var(--card); border-radius:20px;
-    padding:28px 22px; box-shadow:0 12px 40px rgba(0,0,0,.35); border-top:8px solid var(--red); }
-  h1 { margin:0 0 8px; font-size:28px; color:var(--red); text-align:center; }
-  h2 { margin:0 0 16px; font-size:21px; }
+  main { position:relative; width:100%; max-width:440px; background:linear-gradient(180deg, #181b2d, var(--card));
+    border:1px solid var(--line); border-radius:18px; padding:28px 22px; overflow:hidden;
+    box-shadow:0 0 0 6px rgba(212,175,55,.05), 0 20px 60px rgba(0,0,0,.7); }
+  h1 { margin:0 0 10px; font-size:27px; color:var(--gold); text-align:center; letter-spacing:.5px; }
+  h2 { margin:0 0 14px; font-size:15px; color:var(--dim); text-transform:uppercase; letter-spacing:3px; font-weight:normal; text-align:center; }
   p { margin:0 0 16px; }
-  .big { font-size:52px; text-align:center; margin-bottom:8px; }
-  .dots { display:flex; gap:6px; justify-content:center; margin-bottom:18px; }
-  .dots span { width:12px; height:12px; border-radius:50%; background:#ddd; }
-  .dots .done { background:var(--green); } .dots .now { background:var(--red); }
-  button { display:block; width:100%; min-height:52px; margin:10px 0 0; border:0; border-radius:14px;
-    font:600 18px system-ui, sans-serif; cursor:pointer; background:var(--red); color:#fff; }
-  button.opt { background:#fff; color:var(--ink); border:2px solid #ccc; }
-  button.ghost { background:transparent; color:var(--green); border:2px dashed var(--green); }
+  .q { font-size:20px; }
+  .big { font-size:48px; text-align:center; margin-bottom:6px; filter: drop-shadow(0 0 12px rgba(212,175,55,.4)); }
+  .center { text-align:center; } .dim { color:var(--dim); font-style:italic; }
+  .tiles { display:flex; gap:6px; justify-content:center; margin-bottom:20px; flex-wrap:wrap; }
+  .tiles span { width:36px; height:42px; display:grid; place-items:center; border:1px solid var(--line); border-radius:6px;
+    font:bold 20px Georgia, serif; color:var(--dim); background:#0d0f1c; }
+  .tiles .got { color:#1a1406; background:var(--gold); border-color:var(--gold); }
+  button { display:block; width:100%; min-height:52px; margin:10px 0 0; border:0; border-radius:12px;
+    font:bold 17px Georgia, serif; letter-spacing:.5px; cursor:pointer; background:var(--red); color:#fff; }
+  button.opt { background:#0d0f1c; color:var(--ink); border:1px solid var(--line); font-weight:normal; }
+  button.ghost { background:transparent; color:var(--gold); border:1px dashed var(--line); font-weight:normal; }
   button:focus-visible, input:focus-visible { outline:3px solid var(--gold); outline-offset:2px; }
-  input { width:100%; min-height:52px; padding:0 14px; font-size:18px; border:2px solid #ccc; border-radius:14px; }
-  .msg { min-height:26px; margin-top:12px; font-weight:600; text-align:center; }
-  .bad { color:var(--red); } .good { color:var(--green); }
-  .hint { background:#fff3cd; border-radius:12px; padding:12px; margin-top:12px; }
-  .clue { background:var(--green); color:#fff; border-radius:16px; padding:18px; font-size:20px; text-align:center; margin-bottom:8px; }
+  input { width:100%; min-height:52px; padding:0 14px; font:18px Georgia, serif; color:var(--ink);
+    background:#0d0f1c; border:1px solid var(--line); border-radius:12px; }
+  input.one { text-align:center; font-size:28px; text-transform:uppercase; width:80px; display:block; margin:0 auto; }
+  input.word { text-align:center; text-transform:uppercase; letter-spacing:4px; }
+  .msg { min-height:26px; margin-top:12px; text-align:center; font-style:italic; }
+  .bad { color:#e0687c; } .good { color:var(--gold); }
+  .hint { border-left:3px solid var(--gold); background:rgba(212,175,55,.08); padding:10px 12px; margin-top:14px; font-style:italic; }
+  .clue { border:1px solid var(--gold); color:var(--gold); border-radius:12px; padding:18px; font-size:20px; text-align:center;
+    margin-bottom:16px; background:rgba(212,175,55,.06); }
   .shake { animation: shake .4s; }
   @keyframes shake { 25%{transform:translateX(-8px)} 50%{transform:translateX(8px)} 75%{transform:translateX(-4px)} }
-  .confetti { position:fixed; top:-12px; width:10px; height:14px; animation: fall 3s linear forwards; pointer-events:none; }
+  .w { white-space:nowrap; } .l { display:inline-block; }
+  .santa { position:absolute; left:0; font-size:30px; pointer-events:none; z-index:2; }
+  .santa .bob { display:inline-block; animation: bob .25s ease-in-out infinite alternate; }
+  .santa .sack { display:inline-block; width:18px; height:18px; margin-left:-6px; border-radius:50% 50% 45% 45%;
+    background:#6b4a2b; vertical-align:middle; box-shadow: inset -3px -3px 0 rgba(0,0,0,.3); }
+  @keyframes bob { to { transform: translateY(-5px) rotate(-6deg); } }
+  .confetti { position:fixed; top:-12px; width:8px; height:12px; animation: fall 3.5s linear forwards; pointer-events:none; }
 </style>
 </head>
 <body>
 <div class="snow" aria-hidden="true"></div>
 <main id="app" aria-live="polite"></main>
 <script>
-// Edit questions and clues here. "clue" is shown after a correct answer: point it at a real spot at the party.
+// ===== Edit these before the party =====
+// "clue": where the NEXT letter card is hidden. "letter": the letter written on the card at that spot.
+// The 7 letters together must be the letters of MYSTERY_WORD (any order; this order keeps it scrambled).
 const QUIZ = [
   { q: 'How many gifts in total are given across all 12 days of "The Twelve Days of Christmas"?',
     options: ['12', '78', '364', '144'], answer: '364',
     hint: 'Add up every day, including the repeats.',
-    clue: 'Your first clue is waiting... go check under the coat rack! 🧥' },
+    clue: 'Search beneath the coat rack.', letter: 'Y' },
   { q: "I have a trunk but never travel, I wear lights but I'm not on stage, and presents sleep at my feet. What am I?",
     accept: ['tree'], hint: 'You probably decorated one this month.',
-    clue: 'Next stop: look behind the Christmas tree! 🎄' },
+    clue: 'Look behind the Christmas tree.', letter: 'H' },
   { q: "Which of these is NOT one of Santa's reindeer?",
     options: ['Prancer', 'Vixen', 'Twinkle', 'Cupid'], answer: 'Twinkle',
     hint: "Think of the poem “'Twas the Night Before Christmas.”",
-    clue: 'Head to the kitchen and peek inside the fridge door! 🥛' },
+    clue: 'Open the fridge and check the door.', letter: 'N' },
   { q: "I'm hung by the chimney with care, empty all year until one night I'm stuffed. What am I?",
     accept: ['stocking', 'sock'], hint: 'Your feet would fit in me.',
-    clue: 'Check under the sofa cushions! 🛋️' },
+    clue: 'Lift the sofa cushions.', letter: 'C' },
+  { q: 'In "Home Alone", where is the family flying when they leave Kevin behind?',
+    options: ['London', 'Paris', 'Rome', 'New York'], answer: 'Paris',
+    hint: 'Think Eiffel Tower.',
+    clue: 'Check inside the bathroom cabinet.', letter: 'E' },
   { q: 'Which country started the tradition of the decorated Christmas tree?',
     options: ['Germany', 'USA', 'England', 'Norway'], answer: 'Germany',
     hint: 'Think “O Tannenbaum.”',
-    clue: 'Almost there! Look by the front door. 🚪' },
-  { q: 'Unscramble these letters for your final answer: T F I G',
-    accept: ['gift'], hint: "It's what you're hunting for!",
-    clue: 'Your gift is hidden ________! 🎁' },
+    clue: 'Look under the doormat by the front door.', letter: 'I' },
+  { q: 'I fall without getting hurt, I cover the ground but never get dirty, and children roll me into a man. What am I?',
+    accept: ['snow'], hint: 'Frosty is made of me.',
+    clue: 'Search the bookshelf for one last letter.', letter: 'M' },
 ];
+const MYSTERY_WORD = 'CHIMNEY';
+const MYSTERY_HINT = "It's how Santa sneaks into the house.";
+const GIFT_SPOT = 'Your gift is hidden ________.';
+// =======================================
 
-const KEY = 'santa-hunt-step';
-// step: -1 intro, 2*i = question i, 2*i+1 = clue i, 2*QUIZ.length = finished
+const N = QUIZ.length;
+const KEY = 'stolen-gift-step';
+// step: -1 intro, 2i = riddle i, 2i+1 = clue i (enter letter), 2N = mystery word, 2N+1 = solved
 let step = -1;
 try { step = Number(localStorage.getItem(KEY) ?? -1); } catch {}
-if (!(step >= -1 && step <= 2 * QUIZ.length)) step = -1;
+if (!(step >= -1 && step <= 2 * N + 1)) step = -1;
 
 const app = document.getElementById('app');
 const esc = s => String(s).replace(/[&<>"']/g, c => `&#${c.charCodeAt(0)};`);
 const norm = s => s.toLowerCase().replace(/[^a-z0-9 ]/g, '').trim();
 const isRight = (item, given) =>
   item.options ? given === item.answer : item.accept.some(a => norm(given).includes(norm(a)));
+const calm = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 function save() { try { localStorage.setItem(KEY, step); } catch {} }
 function go(n) { step = n; save(); render(); }
+const $ = id => document.getElementById(id);
 
-function dots(i) {
-  return '<div class="dots">' + QUIZ.map((_, j) =>
-    `<span class="${j < i ? 'done' : j === i ? 'now' : ''}"></span>`).join('') + '</div>';
+function tiles(found) {
+  return '<div class="tiles" aria-label="Letters found">' + QUIZ.map((x, j) =>
+    j < found ? `<span class="got">${esc(x.letter)}</span>` : '<span>?</span>').join('') + '</div>';
+}
+function fail(msg, text) {
+  msg.className = 'msg bad'; msg.textContent = text;
+  app.classList.remove('shake'); void app.offsetWidth; app.classList.add('shake');
+}
+function hintButton(text) {
+  $('h').onclick = e => { e.target.outerHTML = `<div class="hint">${esc(text)}</div>`; };
 }
 
 function render() {
   if (step === -1) {
-    app.innerHTML = `<div class="big">🎅</div><h1>Ho ho ho!</h1>
-      <p>Your Secret Santa has hidden your gift somewhere nearby.</p>
-      <p>Solve ${QUIZ.length} Christmas riddles. Each one gives you a clue to the next spot. Ready?</p>
-      <button id="start">Start the hunt</button>`;
-    document.getElementById('start').onclick = () => go(0);
+    app.innerHTML = `<div class="big">🕯️</div><h1>The Case of the Stolen Gift</h1>
+      <p>Someone crept in under cover of night and hid your gift. All they left behind were ${N} riddles.</p>
+      <p>Solve each one to learn where the next clue is hidden. At every hiding place you'll find a single letter.</p>
+      <p>Collect all ${N} letters. Together they spell the secret word that reveals where your gift lies.</p>
+      <p class="dim">And keep your eyes open: a certain jolly thief has been stealing letters...</p>
+      <button id="start">Begin the investigation</button>`;
+    $('start').onclick = () => go(0);
     return;
   }
-  if (step === 2 * QUIZ.length) {
-    app.innerHTML = `<div class="big">🎁</div><h1>You did it!</h1>
-      <div class="clue">${esc(QUIZ.at(-1).clue)}</div>
-      <p style="text-align:center">Merry Christmas from your Secret Santa! 🎄</p>
+  if (step === 2 * N + 1) {
+    app.innerHTML = `<div class="big">🎁</div><h1>Case closed</h1>
+      <div class="clue">${esc(GIFT_SPOT)}</div>
+      <p class="center">Merry Christmas from your Secret Santa.</p>
       <button class="ghost" id="again">Start over</button>`;
-    document.getElementById('again').onclick = () => go(-1);
+    $('again').onclick = () => go(-1);
     confetti();
+    return;
+  }
+  if (step === 2 * N) {
+    app.innerHTML = `${tiles(N)}<h2>The final lock</h2>
+      <p class="q center">Unscramble your ${N} letters into one Christmas word to reveal where your gift is hidden.</p>
+      <form id="f"><input id="a" class="word" autocomplete="off" autocapitalize="characters" maxlength="${MYSTERY_WORD.length}" aria-label="Secret word">
+      <button>Unlock</button></form><div class="msg" id="msg"></div><button class="ghost" id="h">Need a hint?</button>`;
+    $('f').onsubmit = e => {
+      e.preventDefault();
+      norm($('a').value) === norm(MYSTERY_WORD) ? go(2 * N + 1) : fail($('msg'), 'The lock does not budge...');
+    };
+    hintButton(MYSTERY_HINT);
     return;
   }
   const i = Math.floor(step / 2), item = QUIZ[i];
   if (step % 2) {
-    app.innerHTML = `${dots(i + 1)}<p class="good" style="text-align:center">✅ Correct!</p>
+    app.innerHTML = `${tiles(i)}<h2>Clue ${i + 1} of ${N}</h2>
       <div class="clue">${esc(item.clue)}</div>
-      <p style="text-align:center">Go there, then come back for the next riddle.</p>
-      <button id="next">I found it, next riddle</button>`;
-    document.getElementById('next').onclick = () => go(step + 1);
+      <p class="center">Find the letter hidden there, then enter it below.</p>
+      <form id="f"><input id="a" class="one" maxlength="1" autocomplete="off" aria-label="Letter you found">
+      <button>Add to evidence</button></form><div class="msg" id="msg"></div><button class="ghost" id="h">Can't find it?</button>`;
+    $('f').onsubmit = e => {
+      e.preventDefault();
+      norm($('a').value) === norm(item.letter) ? go(step + 1) : fail($('msg'), "That's not the letter hidden there. Look again...");
+    };
+    hintButton('Look carefully, it may be tucked under or behind something. Still stuck? Ask your host.');
     return;
   }
   const input = item.options
     ? item.options.map(o => `<button class="opt" data-v="${esc(o)}">${esc(o)}</button>`).join('')
-    : `<form id="f"><input id="a" autocomplete="off" autocapitalize="off" placeholder="Type your answer" aria-label="Your answer">
+    : `<form id="f"><input id="a" autocomplete="off" autocapitalize="off" placeholder="Your answer" aria-label="Your answer">
        <button>Check answer</button></form>`;
-  app.innerHTML = `${dots(i)}<h2>Riddle ${i + 1} of ${QUIZ.length}</h2><p>${esc(item.q)}</p>${input}
+  app.innerHTML = `${tiles(i)}<h2>Riddle ${i + 1} of ${N}</h2><p class="q" id="q">${esc(item.q)}</p>${input}
     <div class="msg" id="msg"></div><button class="ghost" id="h">Need a hint?</button>`;
-  const msg = document.getElementById('msg');
-  const check = v => {
-    if (isRight(item, v)) return go(i === QUIZ.length - 1 ? 2 * QUIZ.length : step + 1);
-    msg.className = 'msg bad'; msg.textContent = 'Not quite, try again! 🎄';
-    app.classList.remove('shake'); void app.offsetWidth; app.classList.add('shake');
-  };
+  const check = v => isRight(item, v) ? go(step + 1) : fail($('msg'), 'Not quite... try again.');
   if (item.options) app.querySelectorAll('.opt').forEach(b => b.onclick = () => check(b.dataset.v));
-  else document.getElementById('f').onsubmit = e => { e.preventDefault(); check(document.getElementById('a').value); };
-  document.getElementById('h').onclick = e => {
-    e.target.outerHTML = `<div class="hint">💡 ${esc(item.hint)}</div>`;
-  };
+  else $('f').onsubmit = e => { e.preventDefault(); check($('a').value); };
+  hintButton(item.hint);
+  if (!calm) setTimeout(() => $('q') && heist($('q'), item.q), 1200);
+}
+
+// Santa runs across the riddle, snatches 3 letters into his sack, and they reappear a few seconds later.
+function heist(p, text) {
+  p.innerHTML = text.split(' ').map(w => '<span class="w">' + [...w].map(ch =>
+    /[a-z]/i.test(ch) ? `<span class="l">${esc(ch)}</span>` : esc(ch)).join('') + '</span>').join(' ');
+  const letters = [...p.querySelectorAll('.l')].sort(() => Math.random() - .5).slice(0, 3);
+  const santa = document.createElement('div');
+  santa.className = 'santa';
+  santa.setAttribute('aria-hidden', 'true');
+  santa.innerHTML = '<span class="bob">🎅<span class="sack"></span></span>';
+  santa.style.top = Math.max(0, p.offsetTop - 30) + 'px';
+  app.appendChild(santa);
+  const W = app.clientWidth, D = 3200, box = app.getBoundingClientRect();
+  santa.animate([{ transform: 'translateX(-60px)' }, { transform: `translateX(${W + 20}px)` }], { duration: D, fill: 'forwards' })
+    .finished.then(() => santa.remove(), () => {});
+  letters.forEach(l => {
+    const t = (l.getBoundingClientRect().left - box.left + 30) / (W + 80) * D;
+    setTimeout(() => l.animate([{ transform: 'none', opacity: 1 }, { transform: 'translate(24px,-45px) scale(.3)', opacity: 0 }],
+      { duration: 350, easing: 'ease-in', fill: 'forwards' }), t);
+    setTimeout(() => l.animate([{ transform: 'scale(1.8)', opacity: 0 }, { transform: 'none', opacity: 1 }],
+      { duration: 500, fill: 'forwards' }), t + 4500);
+  });
 }
 
 function confetti() {
-  const colors = ['#c8102e', '#f2c14e', '#1f7a4d', '#fff'];
+  if (calm) return;
+  const colors = ['#d4af37', '#a3203a', '#e9e2cc', '#6b7cff'];
   for (let k = 0; k < 60; k++) {
     const c = document.createElement('div');
     c.className = 'confetti';
@@ -144,7 +215,7 @@ function confetti() {
     c.style.background = colors[k % 4];
     c.style.animationDelay = Math.random() * 1.5 + 's';
     document.body.appendChild(c);
-    setTimeout(() => c.remove(), 5000);
+    setTimeout(() => c.remove(), 6000);
   }
 }
 
@@ -153,14 +224,16 @@ for (let k = 0; k < 25; k++) {
   const f = document.createElement('i');
   f.textContent = '❄';
   f.style.left = Math.random() * 100 + 'vw';
-  f.style.fontSize = 10 + Math.random() * 14 + 'px';
-  f.style.animationDuration = 6 + Math.random() * 8 + 's';
-  f.style.animationDelay = -Math.random() * 10 + 's';
+  f.style.fontSize = 8 + Math.random() * 12 + 'px';
+  f.style.animationDuration = 8 + Math.random() * 10 + 's';
+  f.style.animationDelay = -Math.random() * 12 + 's';
   snow.appendChild(f);
 }
 
-// self-check of answer matching
-console.assert(isRight(QUIZ[1], 'A Christmas Tree!') && !isRight(QUIZ[1], 'reindeer') && isRight(QUIZ[5], ' GIFT '), 'answer matching');
+// self-checks: answer matching, and the clue letters really spell the mystery word
+const sorted = s => [...s.toUpperCase()].sort().join('');
+console.assert(isRight(QUIZ[1], 'A Christmas Tree!') && !isRight(QUIZ[1], 'reindeer'), 'answer matching');
+console.assert(sorted(QUIZ.map(x => x.letter).join('')) === sorted(MYSTERY_WORD), 'clue letters must spell MYSTERY_WORD');
 render();
 </script>
 </body>
