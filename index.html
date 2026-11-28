@@ -64,17 +64,18 @@
 const QUIZ = [
   { q: 'How many gifts in total are given across all 12 days of "The Twelve Days of Christmas"?',
     options: ['12', '78', '364', '144'], answer: '364',
-    hint: 'Add up every day, including the repeats.',
+    hint: 'Days in a year.',
     clue: 'Search where Rileys food is kept.', letter: 'R' },
-  { q: "I have a trunk but never travel, I wear lights but I'm not on stage, and presents sleep at my feet. What am I?",
-    accept: ['tree'], hint: 'You probably decorated one this month.',
-    clue: 'Behind the device that Kroon supports the Bokke', letter: 'L' },
+  { q: "What is Scrooge's first name?",
+    accept: ['ebenezer', 'Ebenezer'], hint: 'Think of a Springbok Lock',
+    clue: 'Behind the device that Kroon wacthes the Bokke.', letter: 'L' },
   { q: "Which of these is NOT one of Santa's reindeer?",
     options: ['Prancer', 'Vixen', 'Twinkle', 'Cupid'], answer: 'Twinkle',
-    hint: "Think of the poem “'Twas the Night Before Christmas.”",
+    hint: "How I wonder what you are?",
     clue: 'Porcelain prison cabinet.', letter: 'O' },
-  { q: "I'm hung by the chimney with care, empty all year until one night I'm stuffed. What am I?",
-    accept: ['stocking', 'sock'], hint: 'Your feet would fit in me.',
+  { q: "What do you call Santa's three girlfriends?",
+    options: ['The Mrs. Clauses', 'Ho, ho, ho', 'The Sleigh Belles', 'Santas naughty list'], answer: 'Ho, ho, ho', 
+    hint: 'Garden hose.',
     clue: 'Kess pretends do work here, while she plays with the dogs.', letter: 'I' },
   { q: 'In "Home Alone", where is the family flying when they leave Kevin behind?',
     options: ['London', 'Paris', 'Rome', 'New York'], answer: 'Paris',
@@ -84,13 +85,11 @@ const QUIZ = [
     options: ['Germany', 'USA', 'England', 'Norway'], answer: 'Germany',
     hint: 'Think “O Tannenbaum.”',
     clue: 'Look under the doormat by the front door.', letter: 'V' },
-  { q: 'I fall without getting hurt, I cover the ground but never get dirty, and children roll me into a man. What am I?',
-    accept: ['snow'], hint: 'Frosty is made of me.',
-    clue: 'Search the bookshelf for one last letter.', letter: 'H' },
+ 
 ];
 const MYSTERY_WORD = 'Oliver';
-const MYSTERY_HINT = "It's how Santa sneaks into the house.";
-const GIFT_SPOT = 'Andy looks awfully suspicious, tickle him.';
+const MYSTERY_HINT = "Newest Village member.";
+const GIFT_SPOT = 'Why does Andy look pregnant?';
 // =======================================
 
 const N = QUIZ.length;
